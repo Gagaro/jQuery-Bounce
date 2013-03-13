@@ -11,7 +11,7 @@
     {
 	var data = $this.data('data');
 
-	if (data.stop == 1)
+	if (data.stop)
 	    return ;
 
 	var zone = $(data.settings.zone);
@@ -37,14 +37,20 @@
 	    > zone.height() + pz.top)
 	    $this.data('data').dirY = -1;
 
-	$this.css('left', p.left + data.speedX * data.dirX);
-	$this.css('top', p.top + data.speedY * data.dirY);
+	p.left = p.left + data.speedX * data.dirX;
+	p.top = p.top + data.speedY * data.dirY;
+
+	$this.offset(p);
 
 	setTimeout(function() {bounce($this)}, data.settings.interval);
     }
 
     var methods = {
 	start : function(options) {
+	    var data = $(this).data('data');
+
+	    if (typeof data !== 'undefined' && data.stop == false)
+		return ;
 
 	    var settings = $.extend( {
 		'minSpeed'	: 2,
@@ -71,9 +77,9 @@
 		'dirY' : dirY,
 		'speedX' : speedX,
 		'speedY' : speedY,
-		'settings' : settings
+		'settings' : settings,
+		'stop' : false
 	    });
-
 
 	    var p = $(this).position();
 
@@ -86,7 +92,7 @@
 	},
 
 	stop : function(options) {
-	    $(this).data('data', {stop : 1})
+	    $(this).data('data', {stop : true})
 	}
     };
 
