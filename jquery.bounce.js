@@ -11,7 +11,7 @@
     {
 	var data = $this.data('data');
 
-	if (data.stop)
+	if (typeof data === 'undefined' || data.stop)
 	    return ;
 
 	var zone = $(data.settings.zone);
